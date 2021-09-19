@@ -118,7 +118,6 @@ namespace database2
             this.SelectedProductsList.Name = "SelectedProductsList";
             this.SelectedProductsList.Size = new System.Drawing.Size(288, 344);
             this.SelectedProductsList.TabIndex = 0;
-            this.SelectedProductsList.SelectedIndexChanged += new System.EventHandler(this.SelectedProductsList_SelectedIndexChanged);
             // 
             // panel3
             // 

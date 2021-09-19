@@ -33,8 +33,11 @@ namespace database2
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.btnsave = new System.Windows.Forms.Button();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -43,6 +46,7 @@ namespace database2
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl.Location = new System.Drawing.Point(14, 66);
             this.tabControl.Name = "tabControl";
@@ -72,13 +76,30 @@ namespace database2
             // 
             this.btnsave.BackColor = System.Drawing.Color.White;
             this.btnsave.Font = new System.Drawing.Font("Comic Sans MS", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnsave.Location = new System.Drawing.Point(108, 66);
+            this.btnsave.Location = new System.Drawing.Point(213, 66);
             this.btnsave.Name = "btnsave";
             this.btnsave.Size = new System.Drawing.Size(79, 33);
             this.btnsave.TabIndex = 2;
             this.btnsave.Text = "Save";
             this.btnsave.UseVisualStyleBackColor = false;
             this.btnsave.Click += new System.EventHandler(this.btnsave_Click);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.flowLayoutPanel1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 33);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(556, 461);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "My Products";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(19, 27);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(504, 408);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // Form2
             // 
@@ -92,6 +113,7 @@ namespace database2
             this.Load += new System.EventHandler(this.Form2_Load);
             this.tabControl.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -102,5 +124,7 @@ namespace database2
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private System.Windows.Forms.Button btnsave;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

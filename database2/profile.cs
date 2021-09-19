@@ -22,11 +22,7 @@ namespace database2
             //string base64EncodedImage = null;
         }
 
-        private void SelectedProductsList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+       
 
         
         private Form activeForm = null;

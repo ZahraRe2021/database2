@@ -35,6 +35,9 @@ namespace database2
             flowLayoutPanel.AutoScroll = true;
             flowLayoutPanel.Dock = DockStyle.Fill;
 
+            flowLayoutPanel1.AutoScroll = true;
+            flowLayoutPanel1.Dock = DockStyle.Fill;
+
 
 
             //    if ((output[i].Pic).GetType() == (typeof(byte[])))
@@ -54,7 +57,7 @@ namespace database2
             //        pic.Image = img;
             //    }
 
-         
+
 
             //var result = from s in gbList
             //             where s.Focused == true
@@ -63,7 +66,7 @@ namespace database2
 
             //    foreach (var s in result)
             //{}
-            
+
         }
         string noNullProperty(int i)
         {
@@ -85,6 +88,7 @@ namespace database2
                 cb.Appearance = Appearance.Button;
                 cb.Size = new Size(imageWidth, imageHeight);
                 cb.BackgroundImageLayout = ImageLayout.Zoom;
+
                 ProductImages pI = output[i];
 
                 imgbyte = pI.Pic;
@@ -108,7 +112,7 @@ namespace database2
         private void btnsave_Click(object sender, EventArgs e)
         {
             int j = 1;
-            
+
             var selected = flowLayoutPanel.Controls.OfType<CheckBox>().Where(x => x.Checked);
             if (selected != null)
             {
@@ -118,58 +122,89 @@ namespace database2
                     //Save the picture from item.BackgroundImage.
                     string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
 
-
+                    //byte[] imbyt = null;
                     using (IDbConnection con = new SqlConnection(sql))
                     {
                         List<UserSelecedItems> userItems = new List<UserSelecedItems>();
+
+                        //    using(MemoryStream ms = new MemoryStream())
+                        //{
+                        //    item.Image.Save(ms, item.Image.RawFormat);
+                        //      imbyt = ms.ToArray();
+                        //}
                         userItems.Add(new UserSelecedItems { Id = j, Item = item.Text });
                         j++;
                         con.Execute("insert into UserItem(Id, Item) values(@Id,  @Item)", userItems);
+
+                        LoadFromUserItemTable();
                     }
+
                 }
                 MessageBox.Show("Done!");
             }
             else { MessageBox.Show("Nothing to save!"); }
         }
-    }
-        class UserSelecedItems
+        public void LoadFromUserItemTable()
         {
-            //public Image im { get; set; }
-            //public string Name { get; set; }
-            public string Item { get; set; }
-            public int Id { get; set; }
+            flowLayoutPanel1.Controls.Clear();
+            string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
+            using (IDbConnection con = new SqlConnection(sql))
+            {
+                UserSelecedItems userItemLoad = new UserSelecedItems();
+                
+                var outputLoad = con.Query<UserSelecedItems>("select * from UserItem", new DynamicParameters()).ToList();
+                for (int i = 0; i < outputLoad.Count ; i++)
+                {
+                    CheckBox cb = new CheckBox();
+                    cb.Appearance = Appearance.Button;
+                    cb.Size = new Size(imageWidth, imageHeight);
+                     cb.BackgroundImageLayout = ImageLayout.Zoom;
+                    userItemLoad = outputLoad[i];
+                    cb.Text = userItemLoad.Item;
+                    flowLayoutPanel1.Controls.Add(cb);
+                }
+            }
         }
-
-     
-        //class SelectablegroupBox : GroupBox
-        //{
-        //    public SelectablegroupBox()
-        //    {
-        //        this.SetStyle(ControlStyles.Selectable, true);
-        //        this.TabStop = true;
-        //    }
-
-        //    protected override void OnEnter(EventArgs e)
-        //    {
-        //        //
-        //        this.Focus();
-        //        this.Invalidate();
-        //        base.OnEnter(e);
-        //    }
-
-        //    protected override void OnPaint(PaintEventArgs pe)
-        //    {
-        //        base.OnPaint(pe);
-        //        if (this.Focused)
-        //        {
-        //            var rc = this.ClientRectangle;
-        //            rc.Inflate(-2, -2);
-        //            ControlPaint.DrawFocusRectangle(pe.Graphics, rc);
-        //        }
-        //    }
-        //}
-
     }
+
+    class UserSelecedItems
+    {
+        public byte[] im { get; set; }
+        //public string Name { get; set; }
+        public string Item { get; set; }
+        public int Id { get; set; }
+    }
+
+
+    //class SelectablegroupBox : GroupBox
+    //{
+    //    public SelectablegroupBox()
+    //    {
+    //        this.SetStyle(ControlStyles.Selectable, true);
+    //        this.TabStop = true;
+    //    }
+
+    //    protected override void OnEnter(EventArgs e)
+    //    {
+    //        //
+    //        this.Focus();
+    //        this.Invalidate();
+    //        base.OnEnter(e);
+    //    }
+
+    //    protected override void OnPaint(PaintEventArgs pe)
+    //    {
+    //        base.OnPaint(pe);
+    //        if (this.Focused)
+    //        {
+    //            var rc = this.ClientRectangle;
+    //            rc.Inflate(-2, -2);
+    //            ControlPaint.DrawFocusRectangle(pe.Graphics, rc);
+    //        }
+    //    }
+    //}
+
+}
 
 
 
