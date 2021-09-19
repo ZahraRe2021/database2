@@ -66,9 +66,9 @@ namespace database2
                // MessageBox.Show("f");
                userItems =  con.Query<UserSelecedItems>("select * From UserItem", new DynamicParameters()).ToList();
                 SelectedProductsList.DataSource = userItems;
-                SelectedProductsList.DisplayMember = userItems[0].Item;
+                //SelectedProductsList.DisplayMember = userItems[0].Item;
             }
         }
-       
+       //
     }
 }
