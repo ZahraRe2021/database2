@@ -17,16 +17,21 @@ namespace database2
         {
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
-        //public static List<imgs> ProductView()
+      
+
+        public static string connSQLString(string name= "UserItem")
+        {
+            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+        }
+
+        //public static string connSQLString(string name = "UserItem")
         //{
-        //    using (IDbConnection cnn = new SQLiteConnection(connString("Default")))
-        //    {
-        //        var output = cnn.Query<imgs>("select * from Products", new DynamicParameters()).ToList();
-        //            return output;
-        //    }
+        //    SqlConnection con = new SqlConnection();
+        //    con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
+        //    con.Open();
         //}
 
-
+      public string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
 
     }
 }

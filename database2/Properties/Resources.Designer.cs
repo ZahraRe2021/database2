@@ -63,6 +63,16 @@ namespace database2.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bright_cosy_room {
+            get {
+                object obj = ResourceManager.GetObject("bright-cosy-room", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_close_window_100 {
             get {
                 object obj = ResourceManager.GetObject("icons8-close-window-100", resourceCulture);
@@ -76,6 +86,16 @@ namespace database2.Properties {
         internal static System.Drawing.Bitmap icons8_close_window_100__1_ {
             get {
                 object obj = ResourceManager.GetObject("icons8-close-window-100 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap violet_flowers {
+            get {
+                object obj = ResourceManager.GetObject("violet-flowers", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

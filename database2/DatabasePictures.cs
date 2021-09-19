@@ -51,10 +51,9 @@ namespace database2
             }
         }
        //
-
+       
         public static List<ProductImages> LoadPics()
         {
-           // List<ProductImages> output = new List<ProductImages>();
             using (IDbConnection cnn = new SQLiteConnection(AccessData.connString("ProductsDb")))
             {
                 int num = cnn.ExecuteScalar<int>("select count(Id) from Products");

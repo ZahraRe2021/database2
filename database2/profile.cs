@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace database2
@@ -12,7 +16,7 @@ namespace database2
         {
             InitializeComponent();
         }
-    
+
         private void profile_Load(object sender, EventArgs e)
         {
             //string base64EncodedImage = null;
@@ -22,67 +26,49 @@ namespace database2
         {
 
         }
+
+
         
-        byte[] imgbyte;
-
-        List<GroupBox> gbList = new List<GroupBox>();
-
-        List<ProductImages> output = DatabasePictures.LoadPics();
-        private void btnSearch_Click(object sender, EventArgs e)
+        private Form activeForm = null;
+        private void openChildForm(Form childForm)
         {
-            tabPage1.Controls.Clear();
-            
-            string noNullProperty(int i)
+            if (activeForm != null)
             {
-                if (!string.IsNullOrEmpty(output[i].Printer))
-                { return output[i].Printer; }
-                if (!string.IsNullOrEmpty(output[i].Laser))
-                { return output[i].Laser; }
-                else { return output[i].Laminator; }
+                activeForm.Close();
             }
-
-            int x=0, y=0;
-            int j = 0;
-            for (int i = 0; i < output.Count - 1; i++)
-            {
-                PictureBox pic = new PictureBox();
-                pic.SizeMode = PictureBoxSizeMode.StretchImage;
-                GroupBox gb = new GroupBox();
-                gb.Controls.Add(pic);
-                //pic.Location= new Point()
-                pic.Dock = DockStyle.Right;
-                gb.Text = noNullProperty(i);
-
-                gbList.Add(gb);
-
-                ProductImages pI = output[i];
-
-                if ((output[i].Pic).GetType() == (typeof(byte[])))
-                {
-                    imgbyte = pI.Pic;
-                }
-                // else if ((output[i].Pic).GetType() == (typeof(string)))
-                if (output[i].Id == 6)
-                {
-                    MessageBox.Show("y");
-                    // imgbyte = Convert.FromBase64String(output[i].Pic);
-                }
-
-                using (MemoryStream ms = new MemoryStream(imgbyte))
-                {
-                    Image img = Image.FromStream(ms);
-                    pic.Image = img;
-                }
-
-                tabPage1.Controls.Add(gbList[j]);
-                gbList[j].Location = new Point(x, y);
-                //x += gbList[i].Width;
-                y += gbList[i].Height;
-                j++;
-            }
-
+            activeForm = childForm;
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+            this.panel3.Controls.Add(childForm);
+            panel3.Tag = childForm;
+            childForm.BringToFront();
+            childForm.Show();
         }
 
-        //
+        private void btnProducts_Click(object sender, EventArgs e)
+        {
+           Form Form2 = new Form2();
+            openChildForm( Form2);
+           // UserSelecedItems.
+           // SelectedProductsList.DataSource = Form2.userItems;
+        }
+
+
+        private void btnSearch_Click_2(object sender, EventArgs e)
+        {
+            string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
+
+            using (IDbConnection con = new SqlConnection(sql))
+            {
+                List<UserSelecedItems> userItems = new List<UserSelecedItems>();
+                
+               // MessageBox.Show("f");
+               userItems =  con.Query<UserSelecedItems>("select * From UserItem", new DynamicParameters()).ToList();
+                SelectedProductsList.DataSource = userItems;
+                SelectedProductsList.DisplayMember = userItems[0].Item;
+            }
+        }
+       
     }
 }

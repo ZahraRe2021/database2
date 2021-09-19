@@ -20,3 +20,4 @@ C:\Users\114\source\repos\database2\database2\bin\Debug\System.Data.SQLite.dll
 C:\Users\114\source\repos\database2\database2\bin\Debug\Dapper.xml
 C:\Users\114\source\repos\database2\database2\bin\Debug\System.Data.SQLite.xml
 C:\Users\114\source\repos\database2\database2\obj\Debug\database2.csproj.CopyComplete
+C:\Users\114\source\repos\database2\database2\obj\Debug\database2.Form2.resources
