@@ -46,7 +46,8 @@ namespace database2
             {
                 SelectablePictureBox pic = new SelectablePictureBox();
                 pic.SizeMode = PictureBoxSizeMode.StretchImage;
-                GroupBox gb = new GroupBox();
+               // GroupBox gb = new GroupBox();
+                SelectablegroupBox gb = new SelectablegroupBox();
                 gb.Controls.Add(pic);
                 //pic.Location= new Point()
                 pic.Dock = DockStyle.Right;
@@ -80,27 +81,74 @@ namespace database2
                 j++;
                 //UserSelecedItems userItems = new UserSelecedItems();
             }
-            for (j = 0; j < gbList.Count; j++)
-            {
 
+
+            // private void btnSelect_Click_1(object sender, EventArgs e)
+            // {
+            // for ( j = 0; j < gbList.Count; j++)
+            //{
+           // MessageBox.Show(gbList.Count.ToString());
+            
+            var result = from s in gbList
+                         where s.Focused == true
+                         //where s.selct()
+                         select s;
+
+                foreach (var s in result)
+            {
+                MessageBox.Show(gbList.Count.ToString());
+                string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
+
+
+                    using (IDbConnection con = new SqlConnection(sql))
+                    {
+                        List<UserSelecedItems> userItems = new List<UserSelecedItems>();
+                        userItems.Add(new UserSelecedItems { Id = 1, Item = s.Text }); ;
+
+                        con.Execute("insert into UserItem(Id, Item) values(@Id,  @Item)", userItems);
+                    }
+                }
+                //    Console.WriteLine(student.Id + ", " + student.Name);
+                //if (gbList[j].Focused)
+                //{
+                //     MessageBox.Show("f");
+                //   // MessageBox.Show(gbList.Count.ToString());
+                //    string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
+
+
+                //    using (IDbConnection con = new SqlConnection(sql))
+                //    {//, im = pic.Image
+                //        List<UserSelecedItems> userItems = new List<UserSelecedItems>();
+                //         userItems.Add(new UserSelecedItems { Id = 1, Item = gbList[j].Text }); ;
+
+                //         con.Execute("insert into UserItem(Id, Item) values(@Id,  @Item)", userItems);
+                //    }
+                //}
+           // }
+        }
+
+        private void btnSelect_Click(object sender, EventArgs e)
+        {
+            for (int j = 0; j < gbList.Count; j++)
+            {
+              
                 if (gbList[j].Focused)
-                 MessageBox.Show(gbList.Count.ToString());
                 {
-                    // MessageBox.Show("f");
+                    MessageBox.Show("f");
+                    // MessageBox.Show(gbList.Count.ToString());
                     string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
 
 
                     using (IDbConnection con = new SqlConnection(sql))
-                    {//, im = pic.Image
+                    {
                         List<UserSelecedItems> userItems = new List<UserSelecedItems>();
-                       // userItems.Add(new UserSelecedItems { Id = 1, Item = gb.Text }); ;
+                        userItems.Add(new UserSelecedItems { Id = 1, Item = gbList[j].Text }); ;
 
-                       // con.Execute("insert into UserItem(Id, Item) values(@Id,  @Item)", userItems);
+                        con.Execute("insert into UserItem(Id, Item) values(@Id,  @Item)", userItems);
                     }
                 }
             }
         }
-
     }
     class UserSelecedItems
     {
@@ -145,5 +193,34 @@ namespace database2
             }
         }
     }
+
+    class SelectablegroupBox : GroupBox
+    {
+        public SelectablegroupBox()
+        {
+            this.SetStyle(ControlStyles.Selectable, true);
+            this.TabStop = true;
+        }
+       
+        protected override void OnEnter(EventArgs e)
+        {
+            //
+            this.Focus();
+            this.Invalidate();
+            base.OnEnter(e);
+        }
+       
+        protected override void OnPaint(PaintEventArgs pe)
+        {
+            base.OnPaint(pe);
+            if (this.Focused)
+            {
+                var rc = this.ClientRectangle;
+                rc.Inflate(-2, -2);
+                ControlPaint.DrawFocusRectangle(pe.Graphics, rc);
+            }
+        }
+    }
 }
+
     

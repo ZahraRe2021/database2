@@ -57,15 +57,16 @@ namespace database2
 
         private void btnSearch_Click_2(object sender, EventArgs e)
         {
+            
             string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
 
             using (IDbConnection con = new SqlConnection(sql))
             {
                 List<UserSelecedItems> userItems = new List<UserSelecedItems>();
                 
-               // MessageBox.Show("f");
-               userItems =  con.Query<UserSelecedItems>("select * From UserItem", new DynamicParameters()).ToList();
-                SelectedProductsList.DataSource = userItems;
+                MessageBox.Show("f");
+              // userItems =  con.Query<UserSelecedItems>("select * From UserItem", new DynamicParameters()).ToList();
+               // SelectedProductsList.DataSource = userItems;
                 //SelectedProductsList.DisplayMember = userItems[0].Item;
             }
         }
