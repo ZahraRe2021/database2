@@ -19,12 +19,12 @@ namespace database2
 
         private void profile_Load(object sender, EventArgs e)
         {
+           // label1.Text= LoginForm.profileName;
+            Text= "Hello "+ LoginForm.profileName;
+
             //string base64EncodedImage = null;
         }
-
-       
-
-        
+ 
         private Form activeForm = null;
         private void openChildForm(Form childForm)
         {

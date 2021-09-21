@@ -25,8 +25,6 @@ namespace database2
 
         byte[] imgbyte;
 
-        List<GroupBox> gbList = new List<GroupBox>();
-
         List<ProductImages> output = DatabasePictures.LoadPics();
 
         private void Form2_Load(object sender, EventArgs e)
@@ -38,7 +36,9 @@ namespace database2
             flowLayoutPanel1.AutoScroll = true;
             flowLayoutPanel1.Dock = DockStyle.Fill;
 
-
+            LoadFromUserItemTable();
+            label1.Focus();
+            label1.Visible = false;
 
             //    if ((output[i].Pic).GetType() == (typeof(byte[])))
             //    {
@@ -47,17 +47,8 @@ namespace database2
             //    // else if ((output[i].Pic).GetType() == (typeof(string)))
             //    if (output[i].Id == 6)
             //    {
-            //        MessageBox.Show("y");
             //        // imgbyte = Convert.FromBase64String(output[i].Pic);
             //    }
-
-            //    using (MemoryStream ms = new MemoryStream(imgbyte))
-            //    {
-            //        Image img = Image.FromStream(ms);
-            //        pic.Image = img;
-            //    }
-
-
 
             //var result = from s in gbList
             //             where s.Focused == true
@@ -103,8 +94,6 @@ namespace database2
                 cb.BackgroundImage = Image.FromStream(ms);
                 cb.Text = noNullProperty(i);
                 flowLayoutPanel.Controls.Add(cb);
-
-
             }
         }
 
@@ -112,55 +101,63 @@ namespace database2
         private void btnsave_Click(object sender, EventArgs e)
         {
             int j = 1;
+            LoginForm Loginform = new LoginForm();
+            
 
             var selected = flowLayoutPanel.Controls.OfType<CheckBox>().Where(x => x.Checked);
-            if (selected != null)
+
+            Debug.Print("Selected images: {0}", selected.Count());
+            foreach (var item in selected)
             {
-                Debug.Print("Selected images: {0}", selected.Count());
-                foreach (var item in selected)
+                //Save the picture from item.BackgroundImage.
+                string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
+
+                byte[] imbyt = null;
+                using (IDbConnection con = new SqlConnection(sql))
                 {
-                    //Save the picture from item.BackgroundImage.
-                    string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
+                    //con.Query("select * from LoginInfo2 where Username= ");
+                    List<UserSelecedItems> userItems = new List<UserSelecedItems>();
 
-                    //byte[] imbyt = null;
-                    using (IDbConnection con = new SqlConnection(sql))
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        List<UserSelecedItems> userItems = new List<UserSelecedItems>();
-
-                        //    using(MemoryStream ms = new MemoryStream())
-                        //{
-                        //    item.Image.Save(ms, item.Image.RawFormat);
-                        //      imbyt = ms.ToArray();
-                        //}
-                        userItems.Add(new UserSelecedItems { Id = j, Item = item.Text });
-                        j++;
-                        con.Execute("insert into UserItem(Id, Item) values(@Id,  @Item)", userItems);
-
-                        LoadFromUserItemTable();
+                        item.BackgroundImage.Save(ms, item.BackgroundImage.RawFormat);
+                        imbyt = ms.ToArray();
                     }
 
+                    userItems.Add(new UserSelecedItems {UserName= LoginForm.profileName, Id = j, Item = item.Text, ImageItem = imbyt });
+                    j++;
+                    con.Execute("insert into UserItem(UserName, Id, Item, ImageItem) values(@UserName, @Id, @Item, @ImageItem)", userItems);
                 }
-                MessageBox.Show("Done!");
             }
-            else { MessageBox.Show("Nothing to save!"); }
+            
+            LoadFromUserItemTable();
+
+            MessageBox.Show("Done!");
+            label1.Focus();
         }
+
         public void LoadFromUserItemTable()
         {
             flowLayoutPanel1.Controls.Clear();
             string sql = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
             using (IDbConnection con = new SqlConnection(sql))
             {
-                UserSelecedItems userItemLoad = new UserSelecedItems();
-                
-                var outputLoad = con.Query<UserSelecedItems>("select * from UserItem", new DynamicParameters()).ToList();
-                for (int i = 0; i < outputLoad.Count ; i++)
+                string user = LoginForm.profileName;
+                var outputLoad = con.Query<UserSelecedItems>("select * from UserItem where UserName= {@User}", new { User = user }).ToList();
+                for (int i = 0; i < outputLoad.Count; i++)
                 {
                     CheckBox cb = new CheckBox();
+                    //cb.Focused = true ;
                     cb.Appearance = Appearance.Button;
                     cb.Size = new Size(imageWidth, imageHeight);
-                     cb.BackgroundImageLayout = ImageLayout.Zoom;
-                    userItemLoad = outputLoad[i];
-                    cb.Text = userItemLoad.Item;
+                    cb.BackgroundImageLayout = ImageLayout.Zoom;
+
+                    cb.Text = outputLoad[i].Item;
+                    using (MemoryStream ms = new MemoryStream(outputLoad[i].ImageItem))
+                    {
+                        cb.BackgroundImage = Image.FromStream(ms);
+                    }
+
                     flowLayoutPanel1.Controls.Add(cb);
                 }
             }
@@ -169,10 +166,11 @@ namespace database2
 
     class UserSelecedItems
     {
-        public byte[] im { get; set; }
+        public byte[] ImageItem { get; set; }
         //public string Name { get; set; }
         public string Item { get; set; }
         public int Id { get; set; }
+        public string UserName { get; set; }
     }
 
 

@@ -15,16 +15,19 @@ namespace database2
 {
     public partial class LoginForm : Form
     {
+        public static string profileName ="";
+
         public LoginForm()
         {
             InitializeComponent();
+            
         }
         SqlConnection con = new SqlConnection();
         SqlCommand comm;
         string sql;
         private void LoginForm_Load(object sender, EventArgs e)
         {
-
+            
 
             con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\114\source\repos\database2\database2\Mock_Data.mdf;Integrated Security=True";
             con.Open();
@@ -32,7 +35,7 @@ namespace database2
             //DataSet ds = new DataSet();
             //sAdap.Fill(ds, "Info");
         }
-
+       
         private void btnClose_Click(object sender, EventArgs e)
         {
 
@@ -62,6 +65,7 @@ namespace database2
                     logdta = output;
                     if (logdta[0].Password == tbxPass.Text)
                     {
+                        profileName = tbxUser.Text;
                         SuccessLogin();
                     }
                     else
@@ -75,6 +79,8 @@ namespace database2
                     comm.Parameters.AddWithValue("UserName", tbxUser.Text);
                     comm.Parameters.AddWithValue("Password", tbxPass.Text);
                     comm.ExecuteNonQuery();
+
+                    profileName = tbxUser.Text;
                     SuccessLogin();
                     //MessageBox.Show("Your Account is created . Please login now.");
                 }
@@ -85,13 +91,20 @@ namespace database2
                 MessageBox.Show("Come on! Fill all the boxes!");
             }
         }
-        private void SuccessLogin()
+        public void SuccessLogin()
         {
             var profile = new profile();
             profile.ShowDialog();
+            
+            
+        }
+        public string GetUserName()
+        {
+            return profileName;
         }
         private void btnClear_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(tbxUser.Text);
             tbxUser.Clear();
             tbxPass.Clear();
         }

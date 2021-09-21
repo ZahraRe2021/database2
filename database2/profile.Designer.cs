@@ -145,7 +145,6 @@ namespace database2
             this.ClientSize = new System.Drawing.Size(1032, 712);
             this.Controls.Add(this.splitContainer1);
             this.Name = "profile";
-            this.Text = "My Profile";
             this.Load += new System.EventHandler(this.profile_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
