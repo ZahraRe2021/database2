@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -59,11 +60,10 @@ namespace database2
                 {
                     reader.Close();
 
-
                     var output = con.Query<LoginData>("select * from LoginInfo2 where  UserName= '" + tbxUser.Text + "'").ToList();
                     List<LoginData> logdta = new List<LoginData>();
                     logdta = output;
-                    if (logdta[0].Password == tbxPass.Text)
+                    if (logdta[0].hashedPass == ComputeSha256Hash(tbxPass.Text))
                     {
                         profileName = tbxUser.Text;
                         SuccessLogin();
@@ -74,13 +74,17 @@ namespace database2
                 else
                 {
                     reader.Close();
-                    sql = "insert into LoginInfo2 values(@UserName,@Password)";
+                    profileName = tbxUser.Text;
+
+                    string hashedPassw=ComputeSha256Hash(tbxPass.Text);
+
+                    sql = "insert into LoginInfo2 values(@UserName, @hashedPass)";
                     comm = new SqlCommand(sql, con);
                     comm.Parameters.AddWithValue("UserName", tbxUser.Text);
-                    comm.Parameters.AddWithValue("Password", tbxPass.Text);
+                    comm.Parameters.AddWithValue("hashedPass", hashedPassw);
                     comm.ExecuteNonQuery();
 
-                    profileName = tbxUser.Text;
+                    
                     SuccessLogin();
                     //MessageBox.Show("Your Account is created . Please login now.");
                 }
@@ -98,10 +102,25 @@ namespace database2
             
             
         }
-        public string GetUserName()
-        {
-            return profileName;
-        }
+            
+            static string ComputeSha256Hash(string rawData)
+            {
+                // Create a SHA256   
+                using (SHA256 sha256Hash = SHA256.Create())
+                {
+                    // ComputeHash - returns byte array  
+                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                    // Convert byte array to a string   
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < bytes.Length; i++)
+                    {
+                        builder.Append(bytes[i].ToString("x2"));
+                    }
+                    return builder.ToString();
+                }
+            }
+
         private void btnClear_Click(object sender, EventArgs e)
         {
             MessageBox.Show(tbxUser.Text);
@@ -131,7 +150,7 @@ namespace database2
     public class LoginData
     {
         public string UserName { get; set; }
-        public string Password { get; set; }
+        public string hashedPass { get; set; }
 
     }
 }

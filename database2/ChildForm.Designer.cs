@@ -1,7 +1,7 @@
 ﻿
 namespace database2
 {
-    partial class Form2
+    partial class ChildForm
     {
         /// <summary>
         /// Required designer variable.
@@ -36,6 +36,7 @@ namespace database2
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnsave = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -112,16 +113,29 @@ namespace database2
             this.label1.Text = "label1";
             this.label1.Visible = false;
             // 
-            // Form2
+            // btnDelete
+            // 
+            this.btnDelete.BackColor = System.Drawing.Color.White;
+            this.btnDelete.Font = new System.Drawing.Font("Comic Sans MS", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.Location = new System.Drawing.Point(308, 66);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(79, 40);
+            this.btnDelete.TabIndex = 4;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = false;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click_1);
+            // 
+            // ChildForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(625, 576);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnsave);
             this.Controls.Add(this.tabControl);
-            this.Name = "Form2";
-            this.Text = "Form2";
+            this.Name = "ChildForm";
+            this.Text = "ChildForm";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.tabControl.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -140,5 +154,6 @@ namespace database2
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

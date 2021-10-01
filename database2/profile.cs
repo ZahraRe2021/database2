@@ -44,7 +44,7 @@ namespace database2
 
         private void btnProducts_Click(object sender, EventArgs e)
         {
-           Form Form2 = new Form2();
+           Form Form2 = new ChildForm();
             openChildForm( Form2);
            // UserSelecedItems.
            // SelectedProductsList.DataSource = Form2.userItems;

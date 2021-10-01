@@ -114,7 +114,7 @@ namespace database2
             // 
             this.SelectedProductsList.FormattingEnabled = true;
             this.SelectedProductsList.ItemHeight = 20;
-            this.SelectedProductsList.Location = new System.Drawing.Point(29, 323);
+            this.SelectedProductsList.Location = new System.Drawing.Point(25, 323);
             this.SelectedProductsList.Name = "SelectedProductsList";
             this.SelectedProductsList.Size = new System.Drawing.Size(288, 344);
             this.SelectedProductsList.TabIndex = 0;

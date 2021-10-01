@@ -14,11 +14,9 @@ using System.Windows.Forms;
 
 namespace database2
 {
-    public partial class Form2 : Form
+    public partial class ChildForm : Form
     {
-
-
-        public Form2()
+        public ChildForm()
         {
             InitializeComponent();
         }
@@ -135,7 +133,9 @@ namespace database2
             MessageBox.Show("Done!");
             label1.Focus();
         }
-
+/// <summary>
+/// loading the user items in "My Products" tab:
+/// </summary>
         public void LoadFromUserItemTable()
         {
             flowLayoutPanel1.Controls.Clear();
@@ -143,7 +143,7 @@ namespace database2
             using (IDbConnection con = new SqlConnection(sql))
             {
                 string user = LoginForm.profileName;
-                var outputLoad = con.Query<UserSelecedItems>("select * from UserItem where UserName= {@User}", new { User = user }).ToList();
+                var outputLoad = con.Query<UserSelecedItems>("select * from UserItem where UserName= @User", new { User = user }).ToList();
                 for (int i = 0; i < outputLoad.Count; i++)
                 {
                     CheckBox cb = new CheckBox();
@@ -151,7 +151,7 @@ namespace database2
                     cb.Appearance = Appearance.Button;
                     cb.Size = new Size(imageWidth, imageHeight);
                     cb.BackgroundImageLayout = ImageLayout.Zoom;
-
+                    //cb.
                     cb.Text = outputLoad[i].Item;
                     using (MemoryStream ms = new MemoryStream(outputLoad[i].ImageItem))
                     {
@@ -159,6 +159,33 @@ namespace database2
                     }
 
                     flowLayoutPanel1.Controls.Add(cb);
+                }
+            }
+        }
+       
+        private void btnDelete_Click_1(object sender, EventArgs e)
+        {
+            //Reference the CheckBox which was clicked.
+            CheckBox cb = (sender as CheckBox);
+
+            //Determine the Index of the CheckBox.
+           // int index = int.Parse(cb.Name.Split('_')[1]);
+
+            //Find the TextBox using Index and remove it.
+            // panel1.Controls.Remove(panel1.Controls.Find("txt_" + index, true)[0]);
+
+            //Remove the checkBox.
+            flowLayoutPanel1.Controls.Remove(cb);
+
+            //Rearranging the Location controls.
+            //foreach (CheckBox checkCb in flowLayoutPanel1.Controls.OfType<CheckBox>())
+            {
+                //int controlIndex = int.Parse(cb.Name.Split('_')[1]);
+                //if (controlIndex > index)
+                {
+                    //TextBox txt = (TextBox)panel1.Controls.Find("txt_" + controlIndex, true)[0];
+                    //checkCb.Top = checkCb.Top - 25;
+                  //  txt.Top = txt.Top - 25;
                 }
             }
         }
